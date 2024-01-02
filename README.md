@@ -18,7 +18,7 @@ This project aims to perform statistical analyses on the listing with New York C
 
 ## 📘 Data Source
 
-[Airbnb dataset]([https://www.kaggle.com/datasets/rahulchavan99/marketing-campaign-dataset](https://www.kaggle.com/datasets/dgomonov/new-york-city-airbnb-open-data))
+[Airbnb dataset]([https://www.kaggle.com/datasets/dgomonov/new-york-city-airbnb-open-data])
 
 ## 📋 Dependencies
 
