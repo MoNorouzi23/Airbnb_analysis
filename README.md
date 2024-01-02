@@ -18,11 +18,11 @@ This project aims to perform statistical analyses on the listing with New York C
 
 ## 📘 Data Source
 
-[Airbnb dataset](hhttps://www.kaggle.com/datasets/rahulchavan99/marketing-campaign-dataset)
+[Airbnb dataset](https://www.kaggle.com/datasets/rahulchavan99/marketing-campaign-dataset)
 
 ## 📋 Dependencies
 
-All required dependencies are listed in this [conda environment file](environment.yaml).
+All required dependencies are listed in environment file(environment.yaml).
 
 ## 📖 License
 
