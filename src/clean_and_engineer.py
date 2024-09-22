@@ -4,36 +4,6 @@ import config
 from datetime import datetime
 import os 
 
-
-def main(DATA_PATH, OUTPUT_PATH):
-    """
-    Main function to orchestrate cleaning the data and engineering new features. 
-    
-    Parameters
-    ----------
-    DATA_PATH : str
-        The path to the raw data.
-    OUTPUT_PATH : str
-        The path where to save the updated data.
-    """
-    # CLEANING
-    df = pd.read_csv(DATA_PATH, encoding="utf-8")
-
-    # Remove rows with price = 0 
-    df = df[df['price'] != 0].copy()
-
-    # Impute values 
-    df.loc[:, 'reviews_per_month'] = df['reviews_per_month'].fillna(0)
-    df.loc[:, 'last_review'] = df['last_review'].fillna(pd.Timestamp('1900-01-01')) # to represent no previous reviews
-    df['last_review'] = pd.to_datetime(df['last_review'], errors='coerce')
-
-    # FEATURE ENGINEERING
-    df = estimated_listed_months(df)
-    df = availability_ratio(df)
-    df = days_since_last_review(df)
-    df = distance_from_city_center(df)
-    df.to_csv(os.path.join(OUTPUT_PATH, 'feature_engineered.csv'), index=False)
-
 def estimated_listed_months(df): 
     """
     This function appends a new column 'estimated_listed_months' to the dataframe (df) 
@@ -124,7 +94,37 @@ def distance_from_city_center(df):
     df['distance_from_city_center'] = df.apply(lambda row: distance_from_city(
                 row['latitude'], row['longitude'], nyc_center_lat, nyc_center_lon), axis=1)
         
-    return df 
+    return df
+
+
+def main(DATA_PATH, OUTPUT_PATH):
+    """
+    Main function to orchestrate cleaning the data and engineering new features. 
+    
+    Parameters
+    ----------
+    DATA_PATH : str
+        The path to the raw data.
+    OUTPUT_PATH : str
+        The path where to save the updated data.
+    """
+    # CLEANING
+    df = pd.read_csv(DATA_PATH, encoding="utf-8")
+
+    # Remove rows with price = 0 
+    df = df[df['price'] != 0].copy()
+
+    # Impute values 
+    df.loc[:, 'reviews_per_month'] = df['reviews_per_month'].fillna(0)
+    df.loc[:, 'last_review'] = df['last_review'].fillna(pd.Timestamp('1900-01-01')) # to represent no previous reviews
+    df['last_review'] = pd.to_datetime(df['last_review'], errors='coerce')
+
+    # FEATURE ENGINEERING
+    df = estimated_listed_months(df)
+    df = availability_ratio(df)
+    df = days_since_last_review(df)
+    df = distance_from_city_center(df)
+    df.to_csv(os.path.join(OUTPUT_PATH, 'feature_engineered.csv'), index=False)
 
 if __name__ == "__main__":
     DATA_PATH = config.RAW_DATA
