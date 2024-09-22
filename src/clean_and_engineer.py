@@ -7,7 +7,7 @@ import os
 
 def main(DATA_PATH, OUTPUT_PATH):
     """
-    Main function to orchestrate clean the data and create the engineered features. 
+    Main function to orchestrate cleaning the data and engineering new features. 
     
     Parameters
     ----------
@@ -32,8 +32,7 @@ def main(DATA_PATH, OUTPUT_PATH):
     df = availability_ratio(df)
     df = days_since_last_review(df)
     df = distance_from_city_center(df)
-    df.to_csv(os.path.join(OUTPUT_PATH, 'feature_engineered.csv'))
-
+    df.to_csv(os.path.join(OUTPUT_PATH, 'feature_engineered.csv'), index=False)
 
 def estimated_listed_months(df): 
     """
