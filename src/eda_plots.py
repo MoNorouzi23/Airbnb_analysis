@@ -3,6 +3,7 @@ import altair as alt
 import altair_ally as aly
 import vegafusion
 import os 
+import config
 
 alt.data_transformers.enable("vegafusion")
 aly.alt.data_transformers.enable('vegafusion')
@@ -253,6 +254,7 @@ def corr_plot(df, corr_type='pearson', exclude_cols=None, title='Correlation Plo
     return corr_plot
 
 if __name__ == "__main__":
-    DATA_PATH = "data/AB_NYC_2019.csv" 
-    OUTPUT_PATH = "output/img"  
+    DATA_PATH = config.RAW_DATA 
+    OUTPUT_PATH = config.IMG_OUTPUT_DIR 
+    os.makedirs(OUTPUT_PATH, exist_ok=True)
     main(DATA_PATH, OUTPUT_PATH)
