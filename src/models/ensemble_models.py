@@ -51,20 +51,13 @@ def main(RESULTS_OUTPUT):
     cv_lgbm = pd.DataFrame(cross_validate(pipe_lgbm, X_train, y_train, cv = 10, return_train_score = True))
 
     # Save results
-    cv_results = {'randomforest': cv_rf.agg(['mean', 'std']).round(3).T}
-    print('RF:', cv_results)
-    output_file = os.path.join(RESULTS_OUTPUT, 'cv_results_rf.joblib') 
-    joblib.dump(cv_results, output_file)
-
-    cv_results = {'XGBoost': cv_xgb.agg(['mean', 'std']).round(3).T}
-    print('XGB:', cv_results)
-    output_file = os.path.join(RESULTS_OUTPUT, 'cv_results_xgb.joblib') 
-    joblib.dump(cv_results, output_file)
-
-    cv_results = {'LGBMRegressor': cv_lgbm.agg(['mean', 'std']).round(3).T}
-    print('LGBM:', cv_results)
-    output_file = os.path.join(RESULTS_OUTPUT, 'cv_results_lgbm.joblib') 
-    joblib.dump(cv_results, output_file)
+    model_names = ['randomforest', 'XGBoost', 'LGBMRegressor']
+    model_results = [cv_rf, cv_xgb, cv_lgbm]
+    
+    for name, result in zip(model_names, model_results): 
+        cv_results = {name : result.agg(['mean', 'std']).round(3).T}
+        output_file = os.path.join(RESULTS_OUTPUT, f'cv_results_{name}.joblib') 
+        joblib.dump(cv_results, output_file)
 
 if __name__ == "__main__":
     RESULTS_OUTPUT = config.RESULTS_OUTPUT_DIR
