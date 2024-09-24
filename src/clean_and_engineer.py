@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import config
+from src import config
 from datetime import datetime
 import os 
 
@@ -92,24 +92,15 @@ def distance_from_city_center(df):
         return R * c
 
     df['distance_from_city_center'] = df.apply(lambda row: distance_from_city(
-                row['latitude'], row['longitude'], nyc_center_lat, nyc_center_lon), axis=1)
-        
+                row['latitude'], row['longitude'], nyc_center_lat, nyc_center_lon), axis=1)        
     return df
 
-
-def main(DATA_PATH, OUTPUT_PATH):
+def main():
     """
     Main function to orchestrate cleaning the data and engineering new features. 
-    
-    Parameters
-    ----------
-    DATA_PATH : str
-        The path to the raw data.
-    OUTPUT_PATH : str
-        The path where to save the updated data.
     """
     # CLEANING
-    df = pd.read_csv(DATA_PATH, encoding="utf-8")
+    df = pd.read_csv(config.RAW_DATA, encoding="utf-8")
 
     # Remove rows with price = 0 
     df = df[df['price'] != 0].copy()
@@ -124,10 +115,9 @@ def main(DATA_PATH, OUTPUT_PATH):
     df = availability_ratio(df)
     df = days_since_last_review(df)
     df = distance_from_city_center(df)
-    df.to_csv(os.path.join(OUTPUT_PATH, 'feature_engineered.csv'), index=False)
+    df.to_csv(config.FEAT_ENG_DATA, index=False)
 
 if __name__ == "__main__":
-    DATA_PATH = config.RAW_DATA
-    OUTPUT_PATH = config.DATA_OUTPUT_DIR
-    os.makedirs(OUTPUT_PATH, exist_ok=True)
-    main(DATA_PATH, OUTPUT_PATH)
+    os.makedirs(config.RAW_DATA, exist_ok=True)
+    os.makedirs(config.DATA_OUTPUT_DIR, exist_ok=True)
+    main()

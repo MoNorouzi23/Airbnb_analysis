@@ -3,7 +3,7 @@ import altair as alt
 import altair_ally as aly
 import vegafusion
 import os 
-import config
+from src import config
 
 alt.data_transformers.enable("vegafusion")
 aly.alt.data_transformers.enable('vegafusion')

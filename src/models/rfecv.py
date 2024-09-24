@@ -1,14 +1,14 @@
 import pandas as pd 
 import joblib
 import os
-from .. import config
+from src import config
 from sklearn.model_selection import cross_validate
 from sklearn.pipeline import make_pipeline
 from sklearn.feature_selection import SelectFromModel, RFECV
 from sklearn.linear_model import Lasso
 from lightgbm import LGBMRegressor
 
-from ..preprocessor import create_preprocessor
+from src.preprocessor import create_preprocessor
 
 
 def rfecv_model_development(X_train, y_train): 
@@ -49,6 +49,7 @@ def rfecv_model_development(X_train, y_train):
                                             cv = 10, 
                                             return_train_score = True))
     cv_results = {'RFECV' : cv_rfecv.agg(['mean', 'std']).round(3).T}
+    print(cv_results)
     
     # fit entire training set 
     pipe_rfecv.fit(X_train, y_train)
@@ -89,17 +90,9 @@ def rfecv_feature_importances(model_rfecv, preprocessor, X_train):
                             ).sort_values(by='Importance', ascending=False)
     return feat_imp_df
 
-def main(RESULTS_OUTPUT, MODEL_OUTPUT):
+def main():
     """
-    Main function to ochestrate training of the RFECV model and identifying feature importances. 
-    
-    Parameters
-    ----------   
-    RESULTS_OUTPUT : str
-        The path to the directory for saving the cross-validation results and feature importances. 
-    
-    MODEL_OUTPUT : str
-        The path to the directory for saving the model. 
+    Main function to ochestrate training of the RFECV model and identifying feature importances.    
     """
     # Check necessary data exists
     if not os.path.isfile(config.X_TRAIN_DATA):
@@ -122,17 +115,11 @@ def main(RESULTS_OUTPUT, MODEL_OUTPUT):
     feat_imp_df = rfecv_feature_importances(model_rfecv, preprocessor, X_train)
 
     # Save model, cv results, feature importances 
-    output_file = os.path.join(MODEL_OUTPUT, 'model_rfecv.joblib') 
-    joblib.dump(model_rfecv, output_file)
-
-    output_file = os.path.join(RESULTS_OUTPUT, 'cv_results_RFECV.joblib') 
-    joblib.dump(cv_results, output_file)
-
-    output_file = os.path.join(RESULTS_OUTPUT, 'feat_imp_rfecv.csv') 
-    feat_imp_df.to_csv(output_file, index=False)
+    joblib.dump(model_rfecv, config.RFECV_PATH)
+    joblib.dump(cv_results, config.CV_RFECV_PATH)
+    feat_imp_df.to_csv(config.FEAT_IMP_PATH, index=False)
 
 if __name__ == "__main__":
-    RESULTS_OUTPUT = config.RESULTS_OUTPUT_DIR
-    MODEL_OUTPUT = config.MODEL_OUTPUT_DIR
-    os.makedirs(RESULTS_OUTPUT, exist_ok=True)
-    main(RESULTS_OUTPUT, MODEL_OUTPUT)
+    os.makedirs(config.RESULTS_OUTPUT_DIR, exist_ok=True)
+    os.makedirs(config.MODEL_OUTPUT_DIR, exist_ok=True)
+    main()
