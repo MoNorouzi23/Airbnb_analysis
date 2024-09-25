@@ -88,20 +88,18 @@ def rfecv_feature_importances(model_rfecv, preprocessor, X_train):
     feat_imp_df = pd.DataFrame({'Feature': selected_features, 
                                           'Importance': feature_importances_rfecv}
                             ).sort_values(by='Importance', ascending=False)
-    return feat_imp_df
+    return feat_imp_df, selected_features_mask, selected_features
 
 def main():
     """
     Main function to ochestrate training of the RFECV model and identifying feature importances.    
     """
-    # Check necessary data exists
-    if not os.path.isfile(config.X_TRAIN_DATA):
-        print(f"Error: The X_train data does not exist.")
-        return  # exit function
-    
-    if not os.path.isfile(config.Y_TRAIN_DATA):
-        print(f"Error: The y_train data does not exist.")
-        return  # exit function
+    # Check files exist 
+    files = [config.X_TRAIN_DATA, config.Y_TRAIN_DATA]
+    for f in files: 
+        if not os.path.isfile(f):
+            print(f"Error no file: {f} ")
+            return  # exit function
     
     # Load data
     X_train = pd.read_csv(config.X_TRAIN_DATA)
@@ -112,12 +110,13 @@ def main():
     cv_results, model_rfecv, preprocessor = rfecv_model_development(X_train, y_train)
 
     # identify important features 
-    feat_imp_df = rfecv_feature_importances(model_rfecv, preprocessor, X_train)
+    feat_imp_df, selected_features_mask, selected_features = rfecv_feature_importances(model_rfecv, preprocessor, X_train)
 
     # Save model, cv results, feature importances 
     joblib.dump(model_rfecv, config.RFECV_PATH)
     joblib.dump(cv_results, config.CV_RFECV_PATH)
     feat_imp_df.to_csv(config.FEAT_IMP_PATH, index=False)
+    joblib.dump((selected_features_mask, selected_features), config.SELECTED_FEAT_PATH)
 
 if __name__ == "__main__":
     os.makedirs(config.RESULTS_OUTPUT_DIR, exist_ok=True)

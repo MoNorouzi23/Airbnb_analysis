@@ -212,7 +212,7 @@ def corr_plot(df, corr_type='pearson', exclude_cols=None, title='Correlation Plo
     corr_plot = corr_heatmap + text
     return corr_plot
 
-def main(DATA_PATH, OUTPUT_PATH):
+def main():
     """
     Main function to orchestrate generating the EDA plots and export plots to PNG files.
     
@@ -223,7 +223,7 @@ def main(DATA_PATH, OUTPUT_PATH):
     OUTPUT_PATH : str
         The path where the plots will be saved.
     """
-    df = pd.read_csv(DATA_PATH, encoding="utf-8")
+    df = pd.read_csv(config.RAW_DATA, encoding="utf-8")
 
     # Categorical Columns Distributions
     categ_cols = ['room_type','neighbourhood_group']
@@ -246,15 +246,13 @@ def main(DATA_PATH, OUTPUT_PATH):
     combined_corr = alt.hconcat(pear_corr_plot, spear_corr_plot)
     
     # Save plots
-    cat_barplots.save(os.path.join(OUTPUT_PATH, "categorical_barcharts.png"))
-    num_density_plots.save(os.path.join(OUTPUT_PATH, "numerical_density_plots.png"))
-    target_dist_plots.save(os.path.join(OUTPUT_PATH, "target_dist_plots.png"))
-    target_cat.save(os.path.join(OUTPUT_PATH, "target_dist_grouped_cat.png"))
-    target_num.save(os.path.join(OUTPUT_PATH, "target_dist_grouped_num.png"))
-    combined_corr.save(os.path.join(OUTPUT_PATH, 'correlation_plot.png'))
+    cat_barplots.save(config.CAT_BAR_PATH)
+    num_density_plots.save(config.NUM_DENSITY_PATH)
+    target_dist_plots.save(config.TAR_DIST_PATH)
+    target_cat.save(config.TAR_CAT_PATH)
+    target_num.save(config.TAR_NUM_PATH)
+    combined_corr.save(config.CORR_PATH)
 
 if __name__ == "__main__":
-    DATA_PATH = config.RAW_DATA 
-    OUTPUT_PATH = config.IMG_OUTPUT_DIR 
-    os.makedirs(OUTPUT_PATH, exist_ok=True)
-    main(DATA_PATH, OUTPUT_PATH)
+    os.makedirs(config.IMG_OUTPUT_DIR, exist_ok=True)
+    main()

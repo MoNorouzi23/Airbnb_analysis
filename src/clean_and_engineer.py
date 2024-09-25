@@ -118,6 +118,5 @@ def main():
     df.to_csv(config.FEAT_ENG_DATA, index=False)
 
 if __name__ == "__main__":
-    os.makedirs(config.RAW_DATA, exist_ok=True)
     os.makedirs(config.DATA_OUTPUT_DIR, exist_ok=True)
     main()

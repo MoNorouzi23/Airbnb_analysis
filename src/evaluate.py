@@ -43,17 +43,11 @@ def main():
     Main function to ochestrate the R^2 and MAE test score calculations.     
     """
     # Check files exist 
-    if not os.path.isfile(config.RFECV_PATH):
-        print(f"Error: The RFECV model does not exist.")
-        return  # exit function
-    
-    if not os.path.isfile(config.X_TEST_DATA):
-        print(f"Error: The X_test data does not exist.")
-        return  # exit function
-    
-    if not os.path.isfile(config.Y_TEST_DATA):
-        print(f"Error: The y_test data does not exist.")
-        return  # exit function
+    files = [config.RFECV_PATH, config.X_TEST_DATA, config.Y_TEST_DATA, config.DUMMY_PATH, config.LINEAR_PATH]
+    for f in files: 
+        if not os.path.isfile(f):
+            print(f"Error no file: {f} ")
+            return  # exit function
     
     # Load files
     X_test = pd.read_csv(config.X_TEST_DATA)
@@ -80,6 +74,5 @@ def main():
     mae_comparison.to_csv(config.MAE_PATH, index=False)
 
 if __name__ == "__main__":
-    RESULTS_OUTPUT = config.RESULTS_OUTPUT_DIR  
-    os.makedirs(RESULTS_OUTPUT, exist_ok=True)
-    main(RESULTS_OUTPUT)
+    os.makedirs(config.RESULTS_OUTPUT_DIR , exist_ok=True)
+    main()
