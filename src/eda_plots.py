@@ -199,8 +199,8 @@ def corr_plot(df, corr_type='pearson', exclude_cols=None, title='Correlation Plo
         y=alt.Y('level_1:O', title='Variable', axis=alt.Axis(labelFontSize=14, titleFontSize=16)),
         color=alt.Color('corr', title='Correlation').scale(domain=(-1, 1), scheme='redblue', reverse=True)
     ).properties(
-        width=250,
-        height=250, 
+        width=350,
+        height=350, 
         title=alt.TitleParams(text=title, fontSize=20)
     )
     # add correlation values 

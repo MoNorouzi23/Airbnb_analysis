@@ -49,7 +49,7 @@ def main():
     explanation = explainer(X_test_enc)
 
     # obtain examples of a low and high priced listing  
-    y_test_reset = y_test.reset_index(drop=True)
+    y_test_reset = y_test.squeeze().reset_index(drop=True)
     avg_val = y_test_reset.mean()
     less_ind = y_test_reset[y_test_reset <= avg_val].index.tolist()
     gr_ind = y_test_reset[y_test_reset > avg_val].index.tolist()

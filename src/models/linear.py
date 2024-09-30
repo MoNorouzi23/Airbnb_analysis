@@ -35,7 +35,7 @@ def main():
                                         return_train_score=True, cv=10))
 
  
-    cv_results = {'ridge': cv_ridge.agg(['mean', 'std']).round(3).T}
+    cv_results = {'Ridge': cv_ridge.agg(['mean', 'std']).round(3).T}
     print(cv_results)
     
     pipe_ridge.fit(X_train, y_train)

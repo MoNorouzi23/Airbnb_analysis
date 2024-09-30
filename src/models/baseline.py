@@ -29,7 +29,7 @@ def main():
     pipe_dummy = make_pipeline(preprocessor, DummyRegressor())
     cv_dummy = pd.DataFrame(cross_validate(pipe_dummy, X_train, y_train, return_train_score=True, scoring='r2'))
 
-    cv_results = {'dummy': cv_dummy.agg(['mean', 'std']).round(3).T}    
+    cv_results = {'Dummy': cv_dummy.agg(['mean', 'std']).round(3).T}    
     pipe_dummy.fit(X_train, y_train)
     
     # save results

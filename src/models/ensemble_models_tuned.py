@@ -12,7 +12,6 @@ from xgboost import XGBRegressor
 from lightgbm import LGBMRegressor
 from scipy.stats import uniform, randint
 
-
 def main():
     """
     Main function to ochestrate the hyperparameter optimization for the ensemble models. 
@@ -40,14 +39,8 @@ def main():
     'randomforestregressor__min_samples_leaf' : [1,2,4], 
     }
 
-    random_search_rf = RandomizedSearchCV(estimator=pipe_rf, 
-                                        param_distributions=param_dist,
-                                        n_iter=50, 
-                                        scoring='r2',
-                                        cv=2, 
-                                        n_jobs=-1, 
-                                        random_state=123, 
-                                        return_train_score=True)
+    random_search_rf = RandomizedSearchCV(estimator=pipe_rf, param_distributions=param_dist, n_iter=50, 
+                                        scoring='r2', cv=2, n_jobs=-1, random_state=123, return_train_score=True)
 
     random_search_rf.fit(X_train, y_train)
 
@@ -84,16 +77,8 @@ def main():
 
     }
 
-    random_search_xgb = RandomizedSearchCV(estimator=pipe_xgb, 
-                                    param_distributions=param_dist,
-                                    n_iter=100, 
-                                    scoring='r2', 
-                                    cv=5, 
-                                    n_jobs=-1, 
-                                    random_state=123, 
-                                    verbose=2, 
-                                    return_train_score=True
-                                    )
+    random_search_xgb = RandomizedSearchCV(estimator=pipe_xgb, param_distributions=param_dist, n_iter=100, 
+                                           scoring='r2', cv=5, n_jobs=-1, random_state=123,verbose=2, return_train_score=True)
 
     random_search_xgb.fit(X_train, y_train)
 
@@ -107,13 +92,11 @@ def main():
         'std': [results['std_test_score'], results['std_train_score']]
     }, index=['test_score', 'train_score']).round(3)
 
-
     best_params_xgb = random_search_xgb.best_params_
     print("Best Hyperparameters:")
     for param, value in best_params_xgb.items(): 
         param_name = param.replace('xgbregressor__', '')
         print(f" - {param_name}: {value}")
-
 
     results_xgb_tuned = {'XGB_Tuned': results_xgb}
     joblib.dump(results_xgb_tuned, config.CV_XGB_TUNED_PATH)
@@ -128,13 +111,8 @@ def main():
     'lgbmregressor__reg_lambda': [0, 1,10,100]
     }
 
-    random_search_lgbm = RandomizedSearchCV(estimator=pipe_lgbm, 
-                                    param_distributions=param_dist,
-                                    n_iter=100, 
-                                    scoring='r2', 
-                                    cv=5, n_jobs=-1, 
-                                    random_state=123, 
-                                    return_train_score=True)
+    random_search_lgbm = RandomizedSearchCV(estimator=pipe_lgbm, param_distributions=param_dist, n_iter=100, 
+                                    scoring='r2', cv=5, n_jobs=-1, random_state=123, return_train_score=True)
 
     random_search_lgbm.fit(X_train, y_train)
 
@@ -157,10 +135,6 @@ def main():
     for param, value in best_params_lgbm.items(): 
         param_name = param.replace('lgbmregressor__', '')
         print(f"{param_name}: {value}")
-
-
-
-
 
 if __name__ == "__main__":
     os.makedirs(config.IMG_OUTPUT_DIR, exist_ok=True)

@@ -2,7 +2,7 @@
 .PHONY: all clean
 
 # Default target
-all: output/img/all_plots.png data/output/feature_engineered.csv data/output/data_split.csv output/models/models_rfecv.joblib output/img/shap_gr_plot.png 
+all: output/img/all_plots.png data/output/feature_engineered.csv data/output/correlation_updated_plot.png data/output/data_split.csv output/models/models_rfecv.joblib output/img/shap_gr_plot.png 
 
 # Generate EDA plots
 output/img/all_plots.png: src/eda_plots.py src/config.py data/AB_NYC_2019.csv
@@ -12,6 +12,11 @@ output/img/all_plots.png: src/eda_plots.py src/config.py data/AB_NYC_2019.csv
 data/output/feature_engineered.csv: src/clean_and_engineer.py src/config.py data/AB_NYC_2019.csv
 	python -m src.clean_and_engineer
 
+# Obtain updated correlations
+output/img/correlation_updated_plot.png: src/updated_correlations.py data/output/feature_engineered.csv src/config.py
+	python -m src.updated_correlations
+
+# Split training/test and feature/target	
 data/output/data_split.csv: src/transform_split.py src/config.py data/output/feature_engineered.csv
 	python -m src.transform_split
 
