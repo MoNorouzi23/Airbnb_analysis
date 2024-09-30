@@ -1,0 +1,8 @@
+title: "Airbnb Analysis"
+subtitle: "Leveraging Machine Learning to Predict Listing Prices"
+author: "Karan Khubdikar, Mo Norouzi, Nicole Bidwell"
+date: "2022-09-28"
+execute:
+  execute_notebooks: force 
+html:
+  theme: jupyter_sphinx
