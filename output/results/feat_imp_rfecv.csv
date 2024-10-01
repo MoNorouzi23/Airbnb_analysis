@@ -1,0 +1,16 @@
+Feature,Importance
+longitude,881
+availability_ratio,749
+distance_from_city_center,674
+latitude,645
+minimum_nights,598
+calculated_host_listings_count,517
+estimated_listed_months,473
+days_since_last_review,472
+reviews_per_month,437
+room_type_Shared room,99
+room_type_Entire home/apt,74
+neighbourhood_group_Manhattan,26
+neighbourhood_group_Bronx,20
+neighbourhood_group_Brooklyn,19
+neighbourhood_group_Queens,16
