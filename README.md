@@ -15,7 +15,7 @@ With over 8 million active listings across more than 100,000 cities and towns, A
 
 ## 📄 Report
 
-The final report can be viewed here. **add link to page  
+The pdf copy of the final report can be viewed [here](Airbnb_analysis_report_copy.pdf).
 
 ## 📘 Data Source
 
