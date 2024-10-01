@@ -2,7 +2,7 @@
 .PHONY: all clean
 
 # Default target
-all: output/img/all_plots.png data/output/feature_engineered.csv data/output/correlation_updated_plot.png data/output/data_split.csv output/models/models_rfecv.joblib output/img/shap_gr_plot.png 
+all: output/img/all_plots.png data/output/feature_engineered.csv output/img/correlation_updated_plot.png data/output/data_split.csv output/models/models_rfecv.joblib output/img/shap_gr_plot.png 
 
 # Generate EDA plots
 output/img/all_plots.png: src/eda_plots.py src/config.py data/AB_NYC_2019.csv
